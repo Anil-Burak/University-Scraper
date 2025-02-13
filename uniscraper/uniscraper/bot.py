@@ -4,8 +4,6 @@ from discord import Intents, Client, Message
 import json
 from scrapy.crawler import CrawlerProcess
 from spiders.universityScraper import UniversityscraperSpider
-from twisted.internet import reactor
-from scrapy.crawler import CrawlerRunner
 
 load_dotenv()
 TOKEN = os.getenv('TOKEN')
@@ -88,4 +86,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-    reactor.run()
