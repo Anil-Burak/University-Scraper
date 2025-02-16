@@ -17,6 +17,5 @@ AYT Fizik: 14,00\
 AYT Kimya: 13,00\
 AYT Biyoloji: 13,00\
 
-**CURRENT PROBLEM:**
-Works once and it needs to be restarted.
+Needs to change output for majors other than numerical.
 
