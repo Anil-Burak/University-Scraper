@@ -2,7 +2,7 @@ import os
 from dotenv import load_dotenv
 from discord import Intents, Client, Message
 from scrape import scrapeUni
-
+import json
 
 load_dotenv()
 TOKEN = os.getenv('TOKEN')
@@ -12,23 +12,14 @@ intents: Intents = Intents.default()
 intents.message_content = True
 client: Client = Client(intents=intents)
 
-bolumler = {"tıp": 10206,
-            "tip": 10206,
-            "diş": 10049,
-            "dis": 10049,
-            "diş-hekimliği": 10049,
-            "ceng": 10024,
-            "pc-müh": 10024,
-            "bilgisayar-mühendisliği": 10024,
-            "bilgisayar-müh": 10024,
-            "kimya-mühendisliği": 10127,
-            "kimya-müh": 10127,
-            "fizik-müh": 10071,
-            "fizik-mühendisliği": 10071,
-            "yazılım-müh": 10233,
-            "yazılım-mühendisliği": 10233,
-            "eczacılık": 10050
-            }
+
+def load_bolumler():
+    with open("bolumler.json", "r", encoding="utf-8") as file:
+        return json.load(file)
+
+
+bolumler = load_bolumler()
+
 
 async def send_message(message: Message, user_message: str) -> None:
     if not user_message:
@@ -44,12 +35,15 @@ async def send_message(message: Message, user_message: str) -> None:
     else:
         return
 
+
 async def scrape(uni, bolum):
     return await scrapeUni(uni, bolum)
+
 
 @client.event
 async def on_ready():
     print(f"{client.user} çalışıyor")
+
 
 @client.event
 async def on_message(message: Message):
@@ -62,8 +56,10 @@ async def on_message(message: Message):
     print(f"{channel} {username}: {user_message}")
     await send_message(message, user_message)
 
+
 def main():
     client.run(token=TOKEN)
+
 
 if __name__ == '__main__':
     main()
