@@ -15,7 +15,7 @@ TYT Fen: 18,75\
 AYT Mat: 36,50\
 AYT Fizik: 14,00\
 AYT Kimya: 13,00\
-AYT Biyoloji: 13,00\
+AYT Biyoloji: 13,00
 
 Needs to change output for majors other than numerical.
 
