@@ -8,7 +8,7 @@ async def scrapeUni(uniName, bolumKodu):
 
     async with aiohttp.ClientSession() as session:
         async with session.get(url) as response:
-            htmlText = await response.text()  # Asenkron olarak HTML içeriğini al
+            htmlText = await response.text()
 
     soup = BeautifulSoup(htmlText, "html.parser")
     results = []
@@ -17,7 +17,7 @@ async def scrapeUni(uniName, bolumKodu):
         a_tag = row.select_one("td small a")
 
         if a_tag:
-            a_text = a_tag.text.strip()  # <a> içindeki metni al
+            a_text = a_tag.text.strip()
             if uniName in a_text:
                 containingATag = a_tag.find_parent("td")
 
@@ -47,7 +47,6 @@ AYT Netleri:
     return "\n\n".join(results) if results else "Sonuç bulunamadı."
 
 
-
 if __name__ == "__main__":
-    test_result = asyncio.run(scrapeUni("BOĞAZİÇİ ÜNİVERSİTESİ", 10024))  # Örnek test
+    test_result = asyncio.run(scrapeUni("BOĞAZİÇİ ÜNİVERSİTESİ", 10024))
     print(test_result)
