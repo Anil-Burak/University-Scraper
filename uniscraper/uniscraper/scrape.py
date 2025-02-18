@@ -1,5 +1,6 @@
 import aiohttp
 from bs4 import BeautifulSoup
+import asyncio
 
 
 async def scrapeUni(uniName, bolumKodu):
@@ -20,10 +21,8 @@ async def scrapeUni(uniName, bolumKodu):
             if uniName in a_text:
                 containingATag = a_tag.find_parent("td")
 
-                # Aynı satırdaki tüm <td>'leri al
                 tdDatas = row.find_all("td")
 
-                # <a>'nın bulunduğu <td>'yi atlayarak diğer <td>'lerin metinlerini al
                 uniInfos = [td.text.strip() for td in tdDatas if td != containingATag]
 
                 if len(uniInfos) >= 15 and uniInfos[1] == "2024":  # Dizi boyutunu kontrol et
@@ -48,9 +47,7 @@ AYT Netleri:
     return "\n\n".join(results) if results else "Sonuç bulunamadı."
 
 
-# Eğer bu dosyayı test etmek istersen:
-if __name__ == "__main__":
-    import asyncio
 
+if __name__ == "__main__":
     test_result = asyncio.run(scrapeUni("BOĞAZİÇİ ÜNİVERSİTESİ", 10024))  # Örnek test
     print(test_result)
