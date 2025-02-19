@@ -3,19 +3,25 @@ last person that got into the university
 entered by the user.
 
 Example:\
-!netler ORTA-DOĞU-TEKNİK-ÜNİVERSİTESİ ceng
+!netler ANKARA-ÜNİVERSİTESİ yazılım-müh
 
 Output:\
-Üniversite adı: ORTA DOĞU TEKNİK ÜNİVERSİTESİ (İngilizce) (4 Yıllık)\
-Üniversite tipi: Devlet\
-TYT Türkçe Net: 33,75\
-TYT Sosyal: 18,75\
-TYT Mat: 40,00\
-TYT Fen: 18,75\
-AYT Mat: 36,50\
-AYT Fizik: 14,00\
-AYT Kimya: 13,00\
-AYT Biyoloji: 13,00
+Üniversite Adı: ANKARA ÜNİVERSİTESİ (4 Yıllık)\
+Türü: Devlet
 
-Needs to change output for majors other than numerical.
+Genel Kontenjan: 35.288\
+Okul Birincisi: 44.993\
+OBP: 454,63093\
+TYT Netleri:\
+  • Türkçe: 28,75\
+  • Sosyal: 15,50\
+  • Matematik: 29,50\
+  • Fen: 15,00
+
+AYT Netleri:\
+  • Matematik: 24,50\
+  • Fizik: 11,50\
+  • Kimya: 10,50\
+  • Biyoloji: 10,50
+
 
