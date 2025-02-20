@@ -7,7 +7,6 @@ import json
 load_dotenv()
 TOKEN = os.getenv('TOKEN')
 
-
 intents: Intents = Intents.default()
 intents.message_content = True
 client: Client = Client(intents=intents)
@@ -44,8 +43,9 @@ async def send_message(message: Message, user_message: str) -> None:
         except KeyError:
             await message.channel.send("Girdiğiniz bölüm bulunamadı")
             return
-        except:
-            await message.channel.send("Doğru şekilde girmediniz")
+        except Exception as e:
+            await message.channel.send("Doğru şekilde girmediniz. Eğer eminseniz üniversiteyi daraltın. Örn: İSTANBUL -> İSTANBUL-ÜNİ")
+            print(e)
             return
 
     elif user_message[0] == '!sn':
@@ -57,16 +57,17 @@ async def send_message(message: Message, user_message: str) -> None:
         except KeyError:
             await message.channel.send("Girdiğiniz bölüm bulunamadı")
             return
-        except:
-            await message.channel.send("Doğru şekilde girmediniz")
+        except Exception as e:
+            await message.channel.send("Doğru şekilde girmediniz. Eğer eminseniz üniversiteyi daraltın. Örn: İSTANBUL -> İSTANBUL-ÜNİ")
+            print(e)
             return
 
     else:
         return
 
 
-async def scrape(uni, bolum,siralama):
-    return await scrapeUni(uni, bolum,siralama)
+async def scrape(uni, bolum, siralama):
+    return await scrapeUni(uni, bolum, siralama)
 
 
 @client.event

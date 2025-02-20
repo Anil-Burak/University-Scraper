@@ -10,10 +10,10 @@ API_KEY = os.getenv('API_KEY')
 
 headers = {'User-Agent':
 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_4) '
-'AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36'}
+'AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36'}  # Trying to make bot seem like a human
 
 
-async def scrapeUni(uniName, bolumKodu,siralama):
+async def scrapeUni(uniName, bolumKodu, siralama):
     url = f"https://yokatlas.yok.gov.tr/netler-tablo.php?b={bolumKodu}"
 
     session = aiohttp.ClientSession()
@@ -22,7 +22,7 @@ async def scrapeUni(uniName, bolumKodu,siralama):
 
     soup = BeautifulSoup(htmlText, "html.parser")
     results = []
-    siralamalar = ""
+    siralamalar = ""  # If it's not needed, it will only return an empty string
     for row in soup.select("tr"):
         a_tag = row.select_one("td small a")
 
@@ -40,7 +40,7 @@ async def scrapeUni(uniName, bolumKodu,siralama):
 
                     async with session.get(
                             f"https://proxy.scrapeops.io/v1/?api_key={API_KEY}"
-                            f"&url=https://yokatlas.yok.gov.tr/content/lisans-dynamic/1000_3{link}",
+                            f"&url=https://yokatlas.yok.gov.tr/content/lisans-dynamic/1000_3{link}",  # If proxy is not used, the site catches the bot.
                             headers=headers) as siralamaResponse:
 
                         siralamaText = await siralamaResponse.text()
@@ -48,7 +48,6 @@ async def scrapeUni(uniName, bolumKodu,siralama):
                         siralamaInfos = siralamaSoup.select("tr td")
                         if siralamaInfos:
                             siralamalar = f"""\nGenel Kontenjan: {siralamaInfos[11].text}\nOkul Birincisi: {siralamaInfos[16].text}"""
-
 
                 if len(uniInfos) >= 15 and uniInfos[1] == "2024":
                     formatted_text = f"""
@@ -76,5 +75,5 @@ OBP: {uniInfos[5]}
 
 
 if __name__ == "__main__":
-    test_result = asyncio.run(scrapeUni("MEDİPOL ÜNİVERSİTESİ", 10206,1))
+    test_result = asyncio.run(scrapeUni("MARMARA ÜNİVERSİTESİ", 10206, 1))
     print(test_result)
