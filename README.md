@@ -1,4 +1,4 @@
-A discord bot that shows YKS exam results of the 
+A discord bot that shows YKS results of the 
 last person that got into the university 
 entered by the user.
 

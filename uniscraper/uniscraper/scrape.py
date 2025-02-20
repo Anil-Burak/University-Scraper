@@ -3,6 +3,8 @@ from bs4 import BeautifulSoup
 import asyncio
 import os, dotenv
 
+# TODO: Sıralama eklemek çok yavaşlatıyor, başka bir yöntem bulunmalı.
+
 dotenv.load_dotenv()
 API_KEY = os.getenv('API_KEY')
 
@@ -11,7 +13,7 @@ headers = {'User-Agent':
 'AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36'}
 
 
-async def scrapeUni(uniName, bolumKodu):
+async def scrapeUni(uniName, bolumKodu,siralama):
     url = f"https://yokatlas.yok.gov.tr/netler-tablo.php?b={bolumKodu}"
 
     session = aiohttp.ClientSession()
@@ -20,7 +22,7 @@ async def scrapeUni(uniName, bolumKodu):
 
     soup = BeautifulSoup(htmlText, "html.parser")
     results = []
-
+    siralamalar = ""
     for row in soup.select("tr"):
         a_tag = row.select_one("td small a")
 
@@ -33,8 +35,8 @@ async def scrapeUni(uniName, bolumKodu):
 
                 uniInfos = [td.text.strip() for td in tdDatas if td != containingATag]
 
-                if uniInfos[1] == "2024":
-                    link = a_tag.get("href").strip("lisans")  # Alternatif: a_tag.attrs["href"]
+                if uniInfos[1] == "2024" and siralama:
+                    link = a_tag.get("href").strip("lisans")
 
                     async with session.get(
                             f"https://proxy.scrapeops.io/v1/?api_key={API_KEY}"
@@ -45,27 +47,28 @@ async def scrapeUni(uniName, bolumKodu):
                         siralamaSoup = BeautifulSoup(siralamaText, "html.parser")
                         siralamaInfos = siralamaSoup.select("tr td")
                         if siralamaInfos:
-                            siralamalar = f"""\nGenel Kontenjan: {siralamaInfos[11].text}\nOkul Birincisi: {siralamaInfos[16].text}
-                            """
+                            siralamalar = f"""\nGenel Kontenjan: {siralamaInfos[11].text}\nOkul Birincisi: {siralamaInfos[16].text}"""
+
 
                 if len(uniInfos) >= 15 and uniInfos[1] == "2024":
                     formatted_text = f"""
-
-Üniversite Adı: {a_text}
+__Üniversite Adı:__ {a_text}
 Türü: {uniInfos[2]}
 {siralamalar}
+
 OBP: {uniInfos[5]}
-TYT Netleri:
+**TYT Netleri:**
   • Türkçe: {uniInfos[7]}
   • Sosyal: {uniInfos[8]}
   • Matematik: {uniInfos[9]}
   • Fen: {uniInfos[10]}
 
-AYT Netleri:
+**AYT Netleri:**
   • Matematik: {uniInfos[11]}
   • Fizik: {uniInfos[12]}
   • Kimya: {uniInfos[13]}
   • Biyoloji: {uniInfos[14]}
+-----------------------------------------------------
                     """
                     results.append(formatted_text.strip())
     await session.close()
@@ -73,5 +76,5 @@ AYT Netleri:
 
 
 if __name__ == "__main__":
-    test_result = asyncio.run(scrapeUni("MARMARA ÜNİVERSİTESİ", 10024))
+    test_result = asyncio.run(scrapeUni("MEDİPOL ÜNİVERSİTESİ", 10206,1))
     print(test_result)

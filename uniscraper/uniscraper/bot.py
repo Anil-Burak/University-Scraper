@@ -27,17 +27,46 @@ async def send_message(message: Message, user_message: str) -> None:
         return
 
     user_message = user_message.split()
+
+    if user_message[0] == "!help":
+        await message.channel.send("**Sadece net bilgileri için:** \n"
+                                   "->    !netler ÜNİVERSİTE-İSMİ bölüm")
+        await message.channel.send("**Netler ve sıralamalar için:**\n"
+                                   "->   !sn ÜNİVERSİTE-İSMİ bölüm\n"
+                                   "**Bu komuta yanıt biraz daha uzun sürede gelecektir.**")
+
     if user_message[0] == '!netler':
-        uni = user_message[1].replace("-", " ")
-        bolum = user_message[2].lower()
-        await message.channel.send("Selam")
-        await message.channel.send(await scrape(uni, bolumler[bolum]))
+        try:
+            uni = user_message[1].replace("-", " ")
+            bolum = bolumler[user_message[2].lower()]
+            await message.channel.send("Selam")
+            await message.channel.send(await scrape(uni, bolum, 0))
+        except KeyError:
+            await message.channel.send("Girdiğiniz bölüm bulunamadı")
+            return
+        except:
+            await message.channel.send("Doğru şekilde girmediniz")
+            return
+
+    elif user_message[0] == '!sn':
+        try:
+            uni = user_message[1].replace("-", " ")
+            bolum = bolumler[user_message[2].lower()]
+            await message.channel.send("Selam")
+            await message.channel.send(await scrape(uni, bolum, 1))
+        except KeyError:
+            await message.channel.send("Girdiğiniz bölüm bulunamadı")
+            return
+        except:
+            await message.channel.send("Doğru şekilde girmediniz")
+            return
+
     else:
         return
 
 
-async def scrape(uni, bolum):
-    return await scrapeUni(uni, bolum)
+async def scrape(uni, bolum,siralama):
+    return await scrapeUni(uni, bolum,siralama)
 
 
 @client.event
